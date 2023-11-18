@@ -1,0 +1,50 @@
+version: "3.7"
+
+networks:
+    app-network:
+        driver: bridge
+
+services:
+    app:
+        container_name: app
+        build:
+            context: ./containers/app
+            dockerfile: Dockerfile
+        image: laravelsail/php82-composer
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - app-network
+    nginx:
+        image: nginx:1.25
+        container_name: nginx
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8100:80"
+        volumes:
+            - ./containers/nginx/conf:/etc/nginx/conf.d
+        networks:
+            - app-network
+    db:
+        container_name: pgsql
+        build:
+            context: ./containers/db
+            dockerfile: Dockerfile
+        image: pgsql-docker
+        restart: unless-stopped
+        expose:
+            - "5432"
+        ports:
+            - "5433:5432"
+        volumes:
+            - ./containers/db/script:/docker-entrypoint-initdb.d
+            - ./containers/db/data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=app_db
+            - POSTGRES_PASSWORD=app_db
+        networks:
+            - app-network
