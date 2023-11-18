@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
+        'role',
+        'phone',
+        'auth_code',
+        'auth_code_expire_at',
+        'register_complete'
     ];
 
     /**
@@ -31,6 +38,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'auth_code',
+        'auth_code_expire_at',
     ];
 
     /**
@@ -41,5 +50,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'auth_code_expire_at' => 'datetime',
+        'role' => UserRole::class
     ];
 }
