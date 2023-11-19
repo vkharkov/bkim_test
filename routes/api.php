@@ -25,4 +25,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('auth', \App\Http\Controllers\Api\V1\User\AuthController::class);
 
     });
+
+    Route::group([
+        'prefix' => 'survey',
+        'middleware' => [ 'auth:sanctum' ],
+    ], function () {
+
+        Route::post('create', \App\Http\Controllers\Api\V1\Survey\CreateSurveyController::class);
+
+    });
+
 });
