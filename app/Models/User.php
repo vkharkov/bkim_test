@@ -53,4 +53,9 @@ class User extends Authenticatable
         'auth_code_expire_at' => 'datetime',
         'role' => UserRole::class
     ];
+
+    public function client()
+    {
+        return $this->hasOne(Client::class);
+    }
 }
