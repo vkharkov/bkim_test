@@ -5,30 +5,20 @@ networks:
         driver: bridge
 
 services:
-    app:
-        container_name: app
-        build:
-            context: ./containers/app
-            dockerfile: Dockerfile
-        image: laravelsail/php82-composer
-        restart: unless-stopped
-        tty: true
-        working_dir: /var/www
-        volumes:
-            - ./:/var/www
-        networks:
-            - app-network
     nginx:
-        image: nginx:1.25
         container_name: nginx
+        build:
+            context: ./containers/nginx
+            dockerfile: Dockerfile
         restart: unless-stopped
         tty: true
         ports:
-            - "8100:80"
-        volumes:
-            - ./containers/nginx/conf:/etc/nginx/conf.d
+            - "433:433"
+            - "8100:8100"
         networks:
             - app-network
+        volumes:
+            - .:/var/www
     db:
         container_name: pgsql
         build:
