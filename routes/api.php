@@ -22,6 +22,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function () {
 
         Route::post('register', \App\Http\Controllers\Api\V1\User\RegisterController::class);
+        Route::post('auth', \App\Http\Controllers\Api\V1\User\AuthController::class);
 
     });
 });
